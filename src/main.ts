@@ -13,8 +13,8 @@ async function bootstrap() {
   app.useGlobalFilters(new RestExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Projeto Lanchonete')
-    .setDescription('Esta API expõe endpoints para gerenciar uma lanchonete.')
+    .setTitle('Order Service Lanchonete')
+    .setDescription('Esta API expõe endpoints para criação dos pedidos.')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
