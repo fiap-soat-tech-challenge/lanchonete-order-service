@@ -1,7 +1,6 @@
 import { Situacao } from '../../../../domain/model/situacao';
 import { ApiProperty } from '@nestjs/swagger';
 import { Pedido } from '../../../../domain/model/pedido';
-import { PedidoClientePresenter } from './pedido-cliente.presenter';
 import { ItemPedidoPresenter } from './item-pedido.presenter';
 
 export class PedidoPresenter {
@@ -12,7 +11,7 @@ export class PedidoPresenter {
   readonly codigoPedido: number;
 
   @ApiProperty()
-  readonly cliente: PedidoClientePresenter;
+  readonly cpfCliente: string;
 
   @ApiProperty()
   readonly itensPedido: Array<ItemPedidoPresenter>;
@@ -29,10 +28,7 @@ export class PedidoPresenter {
   public constructor(pedido: Pedido) {
     this.id = pedido.id;
     this.codigoPedido = pedido.codigoPedido;
-    this.cliente =
-      pedido.cliente === null || pedido.cliente === undefined
-        ? null
-        : new PedidoClientePresenter(pedido.cliente);
+    this.cpfCliente = pedido.cpfCliente;
     this.itensPedido = pedido.itensPedido.map(
       (item) => new ItemPedidoPresenter(item),
     );

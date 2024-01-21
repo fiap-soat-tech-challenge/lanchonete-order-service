@@ -3,12 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ItemPedidoEntity } from './item-pedido.entity';
-import { ClienteEntity } from './cliente.entity';
 
 @Entity({ name: 'pedidos' })
 export class PedidoEntity {
@@ -18,12 +16,8 @@ export class PedidoEntity {
   @Column()
   codigoPedido: number;
 
-  @ManyToOne(() => ClienteEntity, {
-    nullable: true,
-    onUpdate: 'RESTRICT',
-    eager: true,
-  })
-  cliente: ClienteEntity;
+  @Column()
+  cpfCliente: string;
 
   @OneToMany(() => ItemPedidoEntity, (item) => item.pedido, {
     cascade: true,
@@ -46,13 +40,13 @@ export class PedidoEntity {
 
   constructor(
     codigoPedido: number,
-    cliente: ClienteEntity,
+    cpfCliente: string,
     itensPedido: Array<ItemPedidoEntity>,
     precoTotal: number,
     situacao: Situacao,
   ) {
     this.codigoPedido = codigoPedido;
-    this.cliente = cliente;
+    this.cpfCliente = cpfCliente;
     this.itensPedido = itensPedido;
     this.precoTotal = precoTotal;
     this.situacao = situacao;
