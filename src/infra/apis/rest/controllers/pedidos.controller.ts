@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -23,7 +15,6 @@ import { UseCasesProxyModule } from '../../../usecases-proxy/use-cases-proxy.mod
 import { ProdutosUseCases } from '../../../../usecases/produtos.use.cases';
 import { Produto } from '../../../../domain/model/produto';
 import { ItemPedido } from '../../../../domain/model/item-pedido';
-import { PedidoStatusDto } from '../dtos/pedido.status.dto';
 
 @ApiTags('Pedidos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
@@ -81,23 +72,5 @@ export class PedidosController {
       .addPedido(pedidoDto.clienteCpf, items);
 
     return new PedidoPresenter(pedido);
-  }
-
-  @ApiOperation({
-    summary: 'Atualiza status do pedido',
-    description: 'Altera o status do pedido produto já cadastrado no sistema',
-  })
-  @ApiOkResponse()
-  @ApiBadRequestResponse({
-    description: 'Dados inválidos ou incorretos',
-  })
-  @Put(':pedidoId')
-  async alterar(
-    @Param('pedidoId') pedidoId: number,
-    @Body() statusDto: PedidoStatusDto,
-  ): Promise<void> {
-    await this.pedidoUseCasesUseCaseProxy
-      .getInstance()
-      .updateStatusPedido(pedidoId, statusDto.status);
   }
 }
