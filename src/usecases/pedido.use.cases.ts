@@ -1,45 +1,16 @@
 import { PedidoRepository } from '../domain/repositories/pedido.repository';
 import { Pedido } from '../domain/model/pedido';
-import { Situacao } from '../domain/model/situacao';
 import { NotFoundException } from '../domain/exceptions/not-found.exception';
 import { ItemPedido } from '../domain/model/item-pedido';
+import { HttpClientService } from '../infra/services/http-client.service';
+import { EnvironmentService } from '../infra/config/environment/environment.service';
 
 export class PedidoUseCases {
-  constructor(private readonly pedidoRepository: PedidoRepository) {}
-
-  async getAllPedidos(): Promise<Array<Pedido>> {
-    return await this.pedidoRepository.findAll();
-  }
-
-  async getAllPedidosSorted(): Promise<Array<Pedido>> {
-    const allPedidos = await this.getAllPedidos();
-
-    return allPedidos
-      .filter((pedido) => {
-        return pedido.situacao !== 'FINALIZADO';
-      })
-      .sort((a, b) => {
-        const ordemSituacao = [
-          Situacao.PRONTO,
-          Situacao.EM_PREPARACAO,
-          Situacao.RECEBIDO,
-        ];
-
-        return (
-          ordemSituacao.indexOf(a.situacao) - ordemSituacao.indexOf(b.situacao)
-        );
-      });
-  }
-
-  async getPedidoById(id: number): Promise<Pedido> {
-    const pedido = await this.pedidoRepository.findById(id);
-
-    if (pedido === null) {
-      throw new NotFoundException('Id do pedido não existe!');
-    }
-
-    return pedido;
-  }
+  constructor(
+    private readonly pedidoRepository: PedidoRepository,
+    private readonly httpClientService: HttpClientService,
+    private readonly environmentService: EnvironmentService,
+  ) {}
 
   async getNextCodigo(): Promise<number> {
     const lastPedido = await this.pedidoRepository.findLastCodigo();
@@ -50,24 +21,34 @@ export class PedidoUseCases {
   }
 
   async addPedido(
-    clienteCpf: string,
+    cpfCliente: string,
     items: Array<ItemPedido>,
   ): Promise<Pedido> {
-    const cliente = null;
-    // TODO: Validar CPF no outro microserviço
-    // if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
-    //   cliente = await this.clienteUseCases.getClienteByCpf(clienteCpf);
-    // }
+    const clienteExists = await this._checkClienteExists(cpfCliente);
+    if (clienteExists === false) {
+      throw new NotFoundException('CPF do cliente não existe!');
+    }
 
     const nextCodigo = await this.getNextCodigo();
 
-    const pedido = new Pedido(nextCodigo, cliente, items);
-    return await this.pedidoRepository.insert(pedido);
+    const pedido = new Pedido(nextCodigo, cpfCliente, items);
+    const pedidoSalvo = await this.pedidoRepository.insert(pedido);
+
+    // TODO: Enviar pedido para o serviço de pagamento e para o serviço de produção
+    console.log('Pedido salvo: ', pedidoSalvo);
+
+    return pedidoSalvo;
   }
 
-  async updateStatusPedido(pedidoId: number, situacao: Situacao) {
-    const pedido = await this.getPedidoById(pedidoId);
-    pedido.situacao = situacao;
-    await this.pedidoRepository.update(pedidoId, pedido);
+  async _checkClienteExists(clienteCpf: string) {
+    if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
+      const clientsServiceUrl = this.environmentService.getClientsServiceUrl();
+      const response = await this.httpClientService.get(
+        `${clientsServiceUrl}/api/clientes/${clienteCpf}`,
+      );
+
+      return response.status == 200;
+    }
+    return true;
   }
 }

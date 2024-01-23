@@ -1,6 +1,0 @@
-export enum Situacao {
-  RECEBIDO = 'RECEBIDO',
-  EM_PREPARACAO = 'EM_PREPARACAO',
-  PRONTO = 'PRONTO',
-  FINALIZADO = 'FINALIZADO',
-}

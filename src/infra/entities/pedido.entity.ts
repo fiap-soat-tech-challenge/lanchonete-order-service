@@ -1,4 +1,3 @@
-import { Situacao } from '../../domain/model/situacao';
 import {
   Column,
   CreateDateColumn,
@@ -28,13 +27,6 @@ export class PedidoEntity {
   @Column()
   precoTotal: number;
 
-  @Column({
-    type: 'enum',
-    enum: Situacao,
-    default: Situacao.RECEBIDO,
-  })
-  situacao: Situacao;
-
   @CreateDateColumn()
   dataHoraCadastro: Date;
 
@@ -43,12 +35,10 @@ export class PedidoEntity {
     cpfCliente: string,
     itensPedido: Array<ItemPedidoEntity>,
     precoTotal: number,
-    situacao: Situacao,
   ) {
     this.codigoPedido = codigoPedido;
     this.cpfCliente = cpfCliente;
     this.itensPedido = itensPedido;
     this.precoTotal = precoTotal;
-    this.situacao = situacao;
   }
 }

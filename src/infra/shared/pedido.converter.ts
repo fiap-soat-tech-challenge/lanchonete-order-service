@@ -17,7 +17,6 @@ export class PedidoConverter {
       pedidoEntity.cpfCliente,
       itensPedidos,
       pedidoEntity.precoTotal,
-      pedidoEntity.situacao,
       pedidoEntity.dataHoraCadastro,
     );
   }
@@ -32,7 +31,6 @@ export class PedidoConverter {
       pedido.cpfCliente,
       itensPedidosEntity,
       pedido.precoTotal,
-      pedido.situacao,
     );
 
     if (pedido.id && pedido.dataHoraCadastro) {

@@ -1,4 +1,3 @@
-import { Situacao } from '../../../../domain/model/situacao';
 import { ApiProperty } from '@nestjs/swagger';
 import { Pedido } from '../../../../domain/model/pedido';
 import { ItemPedidoPresenter } from './item-pedido.presenter';
@@ -20,9 +19,6 @@ export class PedidoPresenter {
   readonly precoTotal: number;
 
   @ApiProperty()
-  readonly situacao: Situacao;
-
-  @ApiProperty()
   readonly dataHoraCadastro: Date;
 
   public constructor(pedido: Pedido) {
@@ -33,7 +29,6 @@ export class PedidoPresenter {
       (item) => new ItemPedidoPresenter(item),
     );
     this.precoTotal = pedido.precoTotal / 100;
-    this.situacao = pedido.situacao;
     this.dataHoraCadastro = pedido.dataHoraCadastro;
   }
 }

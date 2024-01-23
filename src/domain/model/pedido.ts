@@ -1,5 +1,4 @@
 import { ItemPedido } from './item-pedido';
-import { Situacao } from './situacao';
 
 export class Pedido {
   private readonly _id: number | null;
@@ -7,7 +6,6 @@ export class Pedido {
   private readonly _cpfCliente: string;
   private readonly _itensPedido: Array<ItemPedido>;
   private readonly _precoTotal: number;
-  private _situacao: Situacao;
   private readonly _dataHoraCadastro: Date;
 
   public constructor(
@@ -22,7 +20,6 @@ export class Pedido {
     cpfCliente: string,
     itensPedido: Array<ItemPedido>,
     precoTotal: number,
-    situacao: Situacao,
     dataHoraCadastro: Date,
   );
 
@@ -39,8 +36,7 @@ export class Pedido {
     this._cpfCliente = params[2];
     this._itensPedido = params[3];
     this._precoTotal = params[4];
-    this._situacao = params[5];
-    this._dataHoraCadastro = params[6];
+    this._dataHoraCadastro = params[5];
   }
 
   get id(): number | null {
@@ -61,14 +57,6 @@ export class Pedido {
 
   get precoTotal(): number {
     return this._precoTotal;
-  }
-
-  get situacao(): Situacao {
-    return this._situacao;
-  }
-
-  set situacao(situacao: Situacao) {
-    this._situacao = situacao;
   }
 
   get dataHoraCadastro(): Date {

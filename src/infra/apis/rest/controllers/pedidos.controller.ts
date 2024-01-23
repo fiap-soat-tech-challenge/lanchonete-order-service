@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -29,23 +29,6 @@ export class PedidosController {
   ) {}
 
   @ApiOperation({
-    summary: 'Listagem de pedidos cadastrados',
-    description: 'Retorna a lista de pedidos cadastrados no sistema',
-  })
-  @ApiOkResponse({
-    isArray: true,
-    type: PedidoPresenter,
-  })
-  @Get()
-  async listar(): Promise<Array<PedidoPresenter>> {
-    const allPedidosSorted = await this.pedidoUseCasesUseCaseProxy
-      .getInstance()
-      .getAllPedidosSorted();
-
-    return allPedidosSorted.map((pedido) => new PedidoPresenter(pedido));
-  }
-
-  @ApiOperation({
     summary: 'Cria um novo pedido',
     description:
       'Faz o cadastro de uma novo pedido e retorna o pedido em caso de sucesso',
@@ -69,7 +52,7 @@ export class PedidosController {
 
     const pedido = await this.pedidoUseCasesUseCaseProxy
       .getInstance()
-      .addPedido(pedidoDto.clienteCpf, items);
+      .addPedido(pedidoDto.cpfCliente, items);
 
     return new PedidoPresenter(pedido);
   }
