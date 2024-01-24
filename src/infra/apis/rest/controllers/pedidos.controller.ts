@@ -82,7 +82,7 @@ export class PedidosController {
     const pedidoPresenter = new PedidoPresenter(pedido);
 
     await this.httpClientService.post(
-      `${this.envie.paymentServiceUrl()}/api/pedidos/novo`,
+      `${this.envie.paymentServiceUrl()}/api/pagamentos/novo`,
       pedidoPresenter,
     );
     return pedidoPresenter;

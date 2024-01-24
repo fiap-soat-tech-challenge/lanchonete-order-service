@@ -15,7 +15,7 @@ export class PedidoEntity {
   @Column()
   codigoPedido: number;
 
-  @Column()
+  @Column({ nullable: true })
   cpfCliente: string;
 
   @OneToMany(() => ItemPedidoEntity, (item) => item.pedido, {

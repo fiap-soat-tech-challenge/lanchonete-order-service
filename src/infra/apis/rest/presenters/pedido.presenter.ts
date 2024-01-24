@@ -4,7 +4,7 @@ import { ItemPedidoPresenter } from './item-pedido.presenter';
 
 export class PedidoPresenter {
   @ApiProperty()
-  readonly id: number;
+  id: number;
 
   @ApiProperty()
   readonly codigoPedido: number;

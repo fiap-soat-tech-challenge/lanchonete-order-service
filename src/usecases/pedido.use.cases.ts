@@ -32,9 +32,7 @@ export class PedidoUseCases {
     const nextCodigo = await this.getNextCodigo();
 
     const pedido = new Pedido(nextCodigo, cpfCliente, items);
-    // const pedidoSalvo = await this.pedidoRepository.insert(pedido); TODO: Voltar a usar o banco de dados
-
-    return pedido;
+    return await this.pedidoRepository.insert(pedido);
   }
 
   async _checkClienteExists(clienteCpf: string) {
