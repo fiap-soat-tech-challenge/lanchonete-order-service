@@ -32,17 +32,14 @@ export class PedidoUseCases {
     const nextCodigo = await this.getNextCodigo();
 
     const pedido = new Pedido(nextCodigo, cpfCliente, items);
-    const pedidoSalvo = await this.pedidoRepository.insert(pedido);
+    // const pedidoSalvo = await this.pedidoRepository.insert(pedido); TODO: Voltar a usar o banco de dados
 
-    // TODO: Enviar pedido para o serviço de pagamento e para o serviço de produção
-    console.log('Pedido salvo: ', pedidoSalvo);
-
-    return pedidoSalvo;
+    return pedido;
   }
 
   async _checkClienteExists(clienteCpf: string) {
     if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
-      const clientsServiceUrl = this.environmentService.getClientsServiceUrl();
+      const clientsServiceUrl = this.environmentService.clientsServiceUrl();
       const response = await this.httpClientService.get(
         `${clientsServiceUrl}/api/clientes/${clienteCpf}`,
       );

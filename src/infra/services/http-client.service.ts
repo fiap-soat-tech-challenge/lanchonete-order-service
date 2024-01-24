@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import axios, { AxiosResponse } from 'axios';
-import { HttpService } from '@nestjs/axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 @Injectable()
 export class HttpClientService {
-  constructor(private readonly httpService: HttpService) {}
-
   async get(url: string): Promise<AxiosResponse<any, any>> {
     return await this.makeRequest('GET', url);
   }
@@ -18,7 +15,12 @@ export class HttpClientService {
     try {
       return await axios({ method: method, url: url, data: data });
     } catch (error) {
-      throw new Error(`Error making HTTP request: ${error.message}`);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        return axiosError.response;
+      } else {
+        throw new Error('Error making HTTP request');
+      }
     }
   }
 }

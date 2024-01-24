@@ -1,7 +1,8 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiExcludeEndpoint,
   ApiOkResponse,
   ApiOperation,
   ApiResponse,
@@ -15,6 +16,8 @@ import { UseCasesProxyModule } from '../../../usecases-proxy/use-cases-proxy.mod
 import { ProdutosUseCases } from '../../../../usecases/produtos.use.cases';
 import { Produto } from '../../../../domain/model/produto';
 import { ItemPedido } from '../../../../domain/model/item-pedido';
+import { HttpClientService } from '../../../services/http-client.service';
+import { EnvironmentService } from '../../../config/environment/environment.service';
 
 @ApiTags('Pedidos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
@@ -26,7 +29,29 @@ export class PedidosController {
     private pedidoUseCasesUseCaseProxy: UseCaseProxy<PedidoUseCases>,
     @Inject(UseCasesProxyModule.PRODUTO_USECASES_PROXY)
     private produtosUseCasesUseCaseProxy: UseCaseProxy<ProdutosUseCases>,
+    private readonly httpClientService: HttpClientService,
+    private readonly envie: EnvironmentService,
   ) {}
+
+  @ApiExcludeEndpoint()
+  @Get()
+  async listar(): Promise<Array<PedidoPresenter>> {
+    // const allPedidosSorted = await this.pedidoUseCasesUseCaseProxy
+    //   .getInstance()
+    //   .getAllPedidosSorted();
+    //
+    // return allPedidosSorted.map((pedido) => new PedidoPresenter(pedido));
+    return [];
+  }
+
+  @ApiExcludeEndpoint()
+  @Get(':pedidoId')
+  async status(
+    @Param('pedidoId') pedidoId: number,
+  ): Promise<Array<PedidoPresenter>> {
+    console.log(pedidoId);
+    return null;
+  }
 
   @ApiOperation({
     summary: 'Cria um novo pedido',
@@ -54,6 +79,12 @@ export class PedidosController {
       .getInstance()
       .addPedido(pedidoDto.cpfCliente, items);
 
-    return new PedidoPresenter(pedido);
+    const pedidoPresenter = new PedidoPresenter(pedido);
+
+    await this.httpClientService.post(
+      `${this.envie.paymentServiceUrl()}/api/pedidos/novo`,
+      pedidoPresenter,
+    );
+    return pedidoPresenter;
   }
 }
