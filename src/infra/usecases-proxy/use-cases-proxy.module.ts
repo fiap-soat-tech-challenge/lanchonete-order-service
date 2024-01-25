@@ -6,9 +6,9 @@ import { ProdutosUseCases } from '../../usecases/produtos.use.cases';
 import { PedidoRepositoryImpl } from '../repositories/pedido.repository.impl';
 import { PedidoUseCases } from '../../usecases/pedido.use.cases';
 import { ServicesModule } from '../services/services.module';
-import { HttpClientService } from '../services/http-client.service';
 import { EnvironmentModule } from '../config/environment/environment.module';
-import { EnvironmentService } from '../config/environment/environment.service';
+import { PaymentServiceImpl } from '../services/payment.service.impl';
+import { ClientsServiceImpl } from '../services/clients.service.impl';
 
 @Module({
   imports: [RepositoriesModule, ServicesModule, EnvironmentModule],
@@ -28,18 +28,22 @@ export class UseCasesProxyModule {
             new UseCaseProxy(new ProdutosUseCases(produtoRepository)),
         },
         {
-          inject: [PedidoRepositoryImpl, HttpClientService, EnvironmentService],
+          inject: [
+            PedidoRepositoryImpl,
+            ClientsServiceImpl,
+            PaymentServiceImpl,
+          ],
           provide: UseCasesProxyModule.PEDIDO_USECASES_PROXY,
           useFactory: (
             pedidoRepository: PedidoRepositoryImpl,
-            httpClientService: HttpClientService,
-            environmentService: EnvironmentService,
+            ClientsService: ClientsServiceImpl,
+            paymentService: PaymentServiceImpl,
           ) =>
             new UseCaseProxy(
               new PedidoUseCases(
                 pedidoRepository,
-                httpClientService,
-                environmentService,
+                ClientsService,
+                paymentService,
               ),
             ),
         },

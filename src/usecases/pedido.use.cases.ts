@@ -2,14 +2,14 @@ import { PedidoRepository } from '../domain/repositories/pedido.repository';
 import { Pedido } from '../domain/model/pedido';
 import { NotFoundException } from '../domain/exceptions/not-found.exception';
 import { ItemPedido } from '../domain/model/item-pedido';
-import { HttpClientService } from '../infra/services/http-client.service';
-import { EnvironmentService } from '../infra/config/environment/environment.service';
+import { PaymentService } from '../domain/services/payment.service';
+import { ClientsService } from '../domain/services/clients.service';
 
 export class PedidoUseCases {
   constructor(
     private readonly pedidoRepository: PedidoRepository,
-    private readonly httpClientService: HttpClientService,
-    private readonly environmentService: EnvironmentService,
+    private readonly clientsService: ClientsService,
+    private readonly paymentService: PaymentService,
   ) {}
 
   async getNextCodigo(): Promise<number> {
@@ -32,17 +32,16 @@ export class PedidoUseCases {
     const nextCodigo = await this.getNextCodigo();
 
     const pedido = new Pedido(nextCodigo, cpfCliente, items);
-    return await this.pedidoRepository.insert(pedido);
+    const pedidoSalvo = await this.pedidoRepository.insert(pedido);
+
+    await this.paymentService.sendOrderToPayment(pedidoSalvo);
+
+    return pedidoSalvo;
   }
 
   async _checkClienteExists(clienteCpf: string) {
     if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
-      const clientsServiceUrl = this.environmentService.clientsServiceUrl();
-      const response = await this.httpClientService.get(
-        `${clientsServiceUrl}/api/clientes/${clienteCpf}`,
-      );
-
-      return response.status == 200;
+      return await this.clientsService.existsClientByCpf(clienteCpf);
     }
     return true;
   }

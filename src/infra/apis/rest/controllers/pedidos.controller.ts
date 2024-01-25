@@ -79,12 +79,6 @@ export class PedidosController {
       .getInstance()
       .addPedido(pedidoDto.cpfCliente, items);
 
-    const pedidoPresenter = new PedidoPresenter(pedido);
-
-    await this.httpClientService.post(
-      `${this.envie.paymentServiceUrl()}/api/pagamentos/novo`,
-      pedidoPresenter,
-    );
-    return pedidoPresenter;
+    return new PedidoPresenter(pedido);
   }
 }
