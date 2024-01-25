@@ -8,7 +8,7 @@ export class HomeController {
   @Get()
   home(@Req() request: Request): object {
     return {
-      message: 'Bem-vindo a API Lanchonete!',
+      message: 'Bem-vindo ao Order Service Lanchonete!',
       docs: `${request.protocol}://${request.get('Host')}${
         request.originalUrl
       }api/docs`,

@@ -1,54 +1,16 @@
 import { PedidoRepository } from '../domain/repositories/pedido.repository';
 import { Pedido } from '../domain/model/pedido';
-import { Situacao } from '../domain/model/situacao';
 import { NotFoundException } from '../domain/exceptions/not-found.exception';
 import { ItemPedido } from '../domain/model/item-pedido';
-import { ClienteRepository } from '../domain/repositories/cliente.repository';
-import { Inject } from '@nestjs/common';
-import { UseCasesProxyModule } from '../infra/usecases-proxy/use-cases-proxy.module';
-import { UseCaseProxy } from '../infra/usecases-proxy/use-case-proxy';
-import { ClienteUseCases } from './cliente.use.cases';
+import { PaymentService } from '../domain/services/payment.service';
+import { ClientsService } from '../domain/services/clients.service';
 
 export class PedidoUseCases {
   constructor(
     private readonly pedidoRepository: PedidoRepository,
-    // private readonly clienteRepository: ClienteRepository,
-    private clienteUseCases: ClienteUseCases,
+    private readonly clientsService: ClientsService,
+    private readonly paymentService: PaymentService,
   ) {}
-
-  async getAllPedidos(): Promise<Array<Pedido>> {
-    return await this.pedidoRepository.findAll();
-  }
-
-  async getAllPedidosSorted(): Promise<Array<Pedido>> {
-    const allPedidos = await this.getAllPedidos();
-
-    return allPedidos
-      .filter((pedido) => {
-        return pedido.situacao !== 'FINALIZADO';
-      })
-      .sort((a, b) => {
-        const ordemSituacao = [
-          Situacao.PRONTO,
-          Situacao.EM_PREPARACAO,
-          Situacao.RECEBIDO,
-        ];
-
-        return (
-          ordemSituacao.indexOf(a.situacao) - ordemSituacao.indexOf(b.situacao)
-        );
-      });
-  }
-
-  async getPedidoById(id: number): Promise<Pedido> {
-    const pedido = await this.pedidoRepository.findById(id);
-
-    if (pedido === null) {
-      throw new NotFoundException('Id do pedido não existe!');
-    }
-
-    return pedido;
-  }
 
   async getNextCodigo(): Promise<number> {
     const lastPedido = await this.pedidoRepository.findLastCodigo();
@@ -58,24 +20,39 @@ export class PedidoUseCases {
     return lastPedido + 1;
   }
 
+  async getPedidoByOrderId(orderId: number): Promise<Pedido> {
+    const pedido = await this.pedidoRepository.findByOrderId(orderId);
+
+    if (pedido === null) {
+      throw new NotFoundException('Id do pedido não existe!');
+    }
+
+    return pedido;
+  }
+
   async addPedido(
-    clienteCpf: string,
+    cpfCliente: string,
     items: Array<ItemPedido>,
   ): Promise<Pedido> {
-    let cliente = null;
-    if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
-      cliente = await this.clienteUseCases.getClienteByCpf(clienteCpf);
+    const clienteExists = await this._checkClienteExists(cpfCliente);
+    if (clienteExists === false) {
+      throw new NotFoundException('CPF do cliente não existe!');
     }
 
     const nextCodigo = await this.getNextCodigo();
 
-    const pedido = new Pedido(nextCodigo, cliente, items);
-    return await this.pedidoRepository.insert(pedido);
+    const pedido = new Pedido(nextCodigo, cpfCliente, items);
+    const pedidoSalvo = await this.pedidoRepository.insert(pedido);
+
+    await this.paymentService.sendOrderToPayment(pedidoSalvo);
+
+    return pedidoSalvo;
   }
 
-  async updateStatusPedido(pedidoId: number, situacao: Situacao) {
-    const pedido = await this.getPedidoById(pedidoId);
-    pedido.situacao = situacao;
-    await this.pedidoRepository.update(pedidoId, pedido);
+  async _checkClienteExists(clienteCpf: string) {
+    if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
+      return await this.clientsService.existsClientByCpf(clienteCpf);
+    }
+    return true;
   }
 }

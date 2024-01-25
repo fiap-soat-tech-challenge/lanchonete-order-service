@@ -13,8 +13,8 @@ async function bootstrap() {
   app.useGlobalFilters(new RestExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Projeto Lanchonete')
-    .setDescription('Esta API expõe endpoints para gerenciar uma lanchonete.')
+    .setTitle('Order Service Lanchonete')
+    .setDescription('Esta API expõe endpoints para criação dos pedidos.')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -22,6 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();
