@@ -16,8 +16,6 @@ import { UseCasesProxyModule } from '../../../usecases-proxy/use-cases-proxy.mod
 import { ProdutosUseCases } from '../../../../usecases/produtos.use.cases';
 import { Produto } from '../../../../domain/model/produto';
 import { ItemPedido } from '../../../../domain/model/item-pedido';
-import { HttpClientService } from '../../../services/http-client.service';
-import { EnvironmentService } from '../../../config/environment/environment.service';
 
 @ApiTags('Pedidos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
@@ -29,8 +27,6 @@ export class PedidosController {
     private pedidoUseCasesUseCaseProxy: UseCaseProxy<PedidoUseCases>,
     @Inject(UseCasesProxyModule.PRODUTO_USECASES_PROXY)
     private produtosUseCasesUseCaseProxy: UseCaseProxy<ProdutosUseCases>,
-    private readonly httpClientService: HttpClientService,
-    private readonly envie: EnvironmentService,
   ) {}
 
   @ApiExcludeEndpoint()
