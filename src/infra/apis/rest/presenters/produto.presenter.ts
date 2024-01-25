@@ -16,9 +16,6 @@ export class ProdutoPresenter {
   readonly preco: number;
 
   @ApiProperty()
-  readonly dataCadastro: Date;
-
-  @ApiProperty()
   readonly categoria: Categoria;
 
   public constructor(produto: Produto) {
@@ -26,7 +23,6 @@ export class ProdutoPresenter {
     this.nome = produto.nome;
     this.descricao = produto.descricao;
     this.preco = produto.preco / 100;
-    this.dataCadastro = produto.dataCadastro;
     this.categoria = produto.categoria;
   }
 }

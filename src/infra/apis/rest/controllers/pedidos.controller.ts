@@ -34,23 +34,12 @@ export class PedidosController {
   ) {}
 
   @ApiExcludeEndpoint()
-  @Get()
-  async listar(): Promise<Array<PedidoPresenter>> {
-    // const allPedidosSorted = await this.pedidoUseCasesUseCaseProxy
-    //   .getInstance()
-    //   .getAllPedidosSorted();
-    //
-    // return allPedidosSorted.map((pedido) => new PedidoPresenter(pedido));
-    return [];
-  }
-
-  @ApiExcludeEndpoint()
   @Get(':pedidoId')
-  async status(
-    @Param('pedidoId') pedidoId: number,
-  ): Promise<Array<PedidoPresenter>> {
-    console.log(pedidoId);
-    return null;
+  async view(@Param('pedidoId') pedidoId: number): Promise<PedidoPresenter> {
+    const pedido = await this.pedidoUseCasesUseCaseProxy
+      .getInstance()
+      .getPedidoByOrderId(pedidoId);
+    return new PedidoPresenter(pedido);
   }
 
   @ApiOperation({

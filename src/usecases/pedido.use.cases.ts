@@ -20,6 +20,16 @@ export class PedidoUseCases {
     return lastPedido + 1;
   }
 
+  async getPedidoByOrderId(orderId: number): Promise<Pedido> {
+    const pedido = await this.pedidoRepository.findByOrderId(orderId);
+
+    if (pedido === null) {
+      throw new NotFoundException('Id do pedido não existe!');
+    }
+
+    return pedido;
+  }
+
   async addPedido(
     cpfCliente: string,
     items: Array<ItemPedido>,

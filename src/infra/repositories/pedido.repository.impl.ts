@@ -11,9 +11,10 @@ export class PedidoRepositoryImpl implements PedidoRepository {
     private readonly pedidoRepository: Repository<PedidoEntity>,
   ) {}
 
-  async findAll(): Promise<Pedido[]> {
-    const pedidos = await this.pedidoRepository.find();
-    return pedidos.map((entity) => PedidoConverter.toPedido(entity));
+  async findByOrderId(orderId: number): Promise<Pedido | null> {
+    const pedidoEntity = await this.pedidoRepository.findOneBy({ id: orderId });
+    if (pedidoEntity === null) return null;
+    return PedidoConverter.toPedido(pedidoEntity);
   }
 
   async findLastCodigo(): Promise<number | null> {

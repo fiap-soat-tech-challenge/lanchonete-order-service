@@ -1,7 +1,7 @@
 import { Pedido } from '../model/pedido';
 
 export interface PedidoRepository {
-  findAll(): Promise<Pedido[]>;
+  findByOrderId(orderId: number): Promise<Pedido | null>;
   findLastCodigo(): Promise<number | null>;
   insert(pedido: Pedido): Promise<Pedido>;
 }
