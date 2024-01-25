@@ -7,10 +7,10 @@ on:
   pull_request:
 
 env:
-  ECR_REPOSITORY: "lanchonete-app"
+  ECR_REPOSITORY: "lanchonete-order-service"
   ECS_CLUSTER: "lanchonete-cluster"
-  ECS_SERVICE: "app-service"
-  ECS_TASK: "app-task"
+  ECS_SERVICE: "order-service"
+  ECS_TASK: "order-task"
 
 jobs:
   build-and-tests:
@@ -21,9 +21,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: 18
           cache: 'npm'
 
       - name: Install dependencies
