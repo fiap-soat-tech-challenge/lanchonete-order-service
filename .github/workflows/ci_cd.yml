@@ -16,6 +16,10 @@ jobs:
   build-and-tests:
     name: "Continuous integration"
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,8 +36,8 @@ jobs:
       - name: Run build
         run: npm run build --if-present
 
-      - name: Run tests
-        run: npm test
+      - name: Run Tests with Coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
 
   create-docker-image:
     name: "Build Docker image"
