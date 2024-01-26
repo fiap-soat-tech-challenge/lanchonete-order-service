@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  ECR_REPOSITORY: "lanchonete-app"
+  ECR_REPOSITORY: "lanchonete-order-service"
 
 jobs:
   build-and-tests:
