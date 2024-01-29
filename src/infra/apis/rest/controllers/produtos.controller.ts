@@ -28,7 +28,7 @@ import { Categoria } from '../../../../domain/model/categoria';
 @ApiTags('Produtos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
 @ApiBearerAuth()
-@Controller('/api/produtos')
+@Controller('/api/orders/produtos')
 export class ProdutosController {
   constructor(
     @Inject(UseCasesProxyModule.PRODUTO_USECASES_PROXY)
