@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: "lanchonete-order-service"
   ECS_CLUSTER: "lanchonete-cluster"
   ECS_SERVICE: "order-service"
-  ECS_TASK: "order-task"
+  ECS_TASK: "order-service-task"
 
 jobs:
   build:
