@@ -14,7 +14,7 @@ export class PaymentServiceImpl implements PaymentService {
 
   async sendOrderToPayment(pedido: Pedido): Promise<void> {
     await this.httpClientService.post(
-      `${this.envie.paymentServiceUrl()}/api/pagamentos/novo`,
+      `${this.envie.paymentServiceUrl()}/api/clients/pagamentos/novo`,
       new PedidoPresenter(pedido),
     );
   }

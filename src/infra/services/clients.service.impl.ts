@@ -13,7 +13,7 @@ export class ClientsServiceImpl implements ClientsService {
   async existsClientByCpf(clienteCpf: string): Promise<boolean> {
     const clientsServiceUrl = this.environmentService.clientsServiceUrl();
     const response = await this.httpClientService.get(
-      `${clientsServiceUrl}/api/clientes/${clienteCpf}`,
+      `${clientsServiceUrl}/api/clients/clientes/${clienteCpf}`,
     );
     return response.status == 200;
   }
