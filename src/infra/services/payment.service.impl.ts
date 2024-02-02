@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { HttpClientService } from './http-client.service';
-import { EnvironmentService } from '../config/environment/environment.service';
 import { PaymentService } from '../../domain/services/payment.service';
 import { Pedido } from '../../domain/model/pedido';
 import { PedidoPresenter } from '../apis/rest/presenters/pedido.presenter';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaymentServiceImpl implements PaymentService {
   constructor(
     private readonly httpClientService: HttpClientService,
-    private readonly envie: EnvironmentService,
+    private readonly configService: ConfigService,
   ) {}
 
   async sendOrderToPayment(pedido: Pedido): Promise<void> {
+    const paymentUrl = this.configService.get('PAYMENT_SERVICE_URL');
     await this.httpClientService.post(
-      `${this.envie.paymentServiceUrl()}/api/payments/pagamentos/novo`,
+      `${paymentUrl}/api/payments/pagamentos/novo`,
       new PedidoPresenter(pedido),
     );
   }

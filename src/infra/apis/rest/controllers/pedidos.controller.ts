@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -10,9 +10,7 @@ import {
 } from '@nestjs/swagger';
 import { PedidoPresenter } from '../presenters/pedido.presenter';
 import { PedidoDto } from '../dtos/pedido.dto';
-import { UseCaseProxy } from '../../../usecases-proxy/use-case-proxy';
 import { PedidoUseCases } from '../../../../usecases/pedido.use.cases';
-import { UseCasesProxyModule } from '../../../usecases-proxy/use-cases-proxy.module';
 import { ProdutosUseCases } from '../../../../usecases/produtos.use.cases';
 import { Produto } from '../../../../domain/model/produto';
 import { ItemPedido } from '../../../../domain/model/item-pedido';
@@ -20,21 +18,17 @@ import { ItemPedido } from '../../../../domain/model/item-pedido';
 @ApiTags('Pedidos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
 @ApiBearerAuth()
-@Controller('/api/orders/pedidos')
+@Controller('/pedidos')
 export class PedidosController {
   constructor(
-    @Inject(UseCasesProxyModule.PEDIDO_USECASES_PROXY)
-    private pedidoUseCasesUseCaseProxy: UseCaseProxy<PedidoUseCases>,
-    @Inject(UseCasesProxyModule.PRODUTO_USECASES_PROXY)
-    private produtosUseCasesUseCaseProxy: UseCaseProxy<ProdutosUseCases>,
+    private pedidoUseCases: PedidoUseCases,
+    private produtosUseCases: ProdutosUseCases,
   ) {}
 
   @ApiExcludeEndpoint()
   @Get(':pedidoId')
   async view(@Param('pedidoId') pedidoId: number): Promise<PedidoPresenter> {
-    const pedido = await this.pedidoUseCasesUseCaseProxy
-      .getInstance()
-      .getPedidoByOrderId(pedidoId);
+    const pedido = await this.pedidoUseCases.getPedidoByOrderId(pedidoId);
     return new PedidoPresenter(pedido);
   }
 
@@ -53,16 +47,17 @@ export class PedidosController {
   async incluir(@Body() pedidoDto: PedidoDto): Promise<PedidoPresenter> {
     const items = await Promise.all(
       pedidoDto.itensPedido.map(async (item) => {
-        const produto: Produto = await this.produtosUseCasesUseCaseProxy
-          .getInstance()
-          .getProdutoById(item.produtoId);
+        const produto: Produto = await this.produtosUseCases.getProdutoById(
+          item.produtoId,
+        );
         return new ItemPedido(produto, item.quantidade);
       }),
     );
 
-    const pedido = await this.pedidoUseCasesUseCaseProxy
-      .getInstance()
-      .addPedido(pedidoDto.cpfCliente, items);
+    const pedido = await this.pedidoUseCases.addPedido(
+      pedidoDto.cpfCliente,
+      items,
+    );
 
     return new PedidoPresenter(pedido);
   }

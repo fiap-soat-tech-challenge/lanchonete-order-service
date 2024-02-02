@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Post,
   Put,
@@ -19,8 +18,6 @@ import {
 } from '@nestjs/swagger';
 import { CategoriaPresenter } from '../presenters/categoria.presenter';
 import { ProdutoPresenter } from '../presenters/produto.presenter';
-import { UseCasesProxyModule } from '../../../usecases-proxy/use-cases-proxy.module';
-import { UseCaseProxy } from '../../../usecases-proxy/use-case-proxy';
 import { ProdutosUseCases } from '../../../../usecases/produtos.use.cases';
 import { ProdutoDto } from '../dtos/produto.dto';
 import { Categoria } from '../../../../domain/model/categoria';
@@ -28,12 +25,9 @@ import { Categoria } from '../../../../domain/model/categoria';
 @ApiTags('Produtos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
 @ApiBearerAuth()
-@Controller('/api/orders/produtos')
+@Controller('/produtos')
 export class ProdutosController {
-  constructor(
-    @Inject(UseCasesProxyModule.PRODUTO_USECASES_PROXY)
-    private produtosUseCasesUseCaseProxy: UseCaseProxy<ProdutosUseCases>,
-  ) {}
+  constructor(private produtosUseCases: ProdutosUseCases) {}
 
   @ApiOperation({
     summary: 'Lista todos os produtos',
@@ -46,9 +40,7 @@ export class ProdutosController {
   })
   @Get()
   async listar(): Promise<Array<CategoriaPresenter>> {
-    const allProdutos = await this.produtosUseCasesUseCaseProxy
-      .getInstance()
-      .getAllProdutos();
+    const allProdutos = await this.produtosUseCases.getAllProdutos();
     return allProdutos.map((produto) => new ProdutoPresenter(produto));
   }
 
@@ -67,9 +59,8 @@ export class ProdutosController {
   async buscarPorCategoria(
     @Param('categoria') categoria: Categoria,
   ): Promise<Array<ProdutoPresenter>> {
-    const produtosByCategoria = await this.produtosUseCasesUseCaseProxy
-      .getInstance()
-      .getProdutosByCategoria(categoria);
+    const produtosByCategoria =
+      await this.produtosUseCases.getProdutosByCategoria(categoria);
     return produtosByCategoria.map((produto) => new ProdutoPresenter(produto));
   }
 
@@ -86,9 +77,9 @@ export class ProdutosController {
   })
   @Post()
   async incluir(@Body() produtoDto: ProdutoDto): Promise<ProdutoPresenter> {
-    const produto = await this.produtosUseCasesUseCaseProxy
-      .getInstance()
-      .addProduto(produtoDto.toProduto());
+    const produto = await this.produtosUseCases.addProduto(
+      produtoDto.toProduto(),
+    );
     return new ProdutoPresenter(produto);
   }
 
@@ -105,9 +96,10 @@ export class ProdutosController {
     @Param('produtoId') produtoId: number,
     @Body() produtoDto: ProdutoDto,
   ): Promise<void> {
-    await this.produtosUseCasesUseCaseProxy
-      .getInstance()
-      .updateProduto(produtoId, produtoDto.toProduto());
+    await this.produtosUseCases.updateProduto(
+      produtoId,
+      produtoDto.toProduto(),
+    );
   }
 
   @ApiOperation({
@@ -120,8 +112,6 @@ export class ProdutosController {
   })
   @Delete(':produtoId')
   async excluir(@Param('produtoId') produtoId: number): Promise<void> {
-    await this.produtosUseCasesUseCaseProxy
-      .getInstance()
-      .deleteProduto(produtoId);
+    await this.produtosUseCases.deleteProduto(produtoId);
   }
 }
