@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { ClientsService } from '../../domain/services/clients.service';
-import { EnvironmentService } from '../config/environment/environment.service';
 import { HttpClientService } from './http-client.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ClientsServiceImpl implements ClientsService {
   constructor(
-    private readonly environmentService: EnvironmentService,
+    private readonly configService: ConfigService,
     private readonly httpClientService: HttpClientService,
   ) {}
 
   async existsClientByCpf(clienteCpf: string): Promise<boolean> {
-    const clientsServiceUrl = this.environmentService.clientsServiceUrl();
+    const clientsUrl = this.configService.get('CLIENTS_SERVICE_URL');
     const response = await this.httpClientService.get(
-      `${clientsServiceUrl}/api/clients/clientes/${clienteCpf}`,
+      `${clientsUrl}/api/clients/clientes/${clienteCpf}`,
     );
     return response.status == 200;
   }
