@@ -24,7 +24,7 @@ export class ProdutoEntity {
   dataCadastro: Date;
 
   @Column({
-    type: 'enum',
+    type: 'simple-enum',
     enum: Categoria,
     default: Categoria.ACOMPANHAMENTO,
   })

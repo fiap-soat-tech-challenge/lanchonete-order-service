@@ -7,7 +7,7 @@ import { RestExceptionFilter } from './infra/apis/rest/exceptions/rest-exception
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('/api/pedidos', {
+  app.setGlobalPrefix('/api', {
     exclude: [{ path: 'health', method: RequestMethod.GET }],
   });
 
