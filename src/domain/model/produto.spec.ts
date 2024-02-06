@@ -1,5 +1,5 @@
 import { Categoria } from './categoria';
-import { Produto } from './Produto';
+import { Produto } from './produto';
 
 describe('Produto', () => {
   const currentDate = new Date();
