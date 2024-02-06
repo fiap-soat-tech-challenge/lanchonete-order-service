@@ -68,6 +68,15 @@ describe('PedidoUseCases', () => {
     expect(mockPedidoRepository.findLastCodigo).toHaveBeenCalled();
   });
 
+  it('should getNextCodigo call repository.findLastCodigo and return 1', async () => {
+    mockPedidoRepository.findLastCodigo.mockResolvedValue(null);
+
+    const result = await pedidoUseCases.getNextCodigo();
+
+    expect(result).toBe(1);
+    expect(mockPedidoRepository.findLastCodigo).toHaveBeenCalled();
+  });
+
   it('should get pedido by order id', async () => {
     mockPedidoRepository.findByOrderId.mockResolvedValue(examplePedido);
 
