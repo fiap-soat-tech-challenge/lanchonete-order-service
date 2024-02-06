@@ -127,4 +127,10 @@ describe('PedidoUseCases', () => {
     expect(mockPedidoRepository.insert).not.toHaveBeenCalled();
     expect(mockPaymentService.sendOrderToPayment).not.toHaveBeenCalled();
   });
+
+  it('should not throw NotFoundException when adding request with clientCpf is null', async () => {
+    await pedidoUseCases.addPedido(null, [exampleItemPedido]);
+    expect(mockPedidoRepository.insert).toHaveBeenCalled();
+    expect(mockPaymentService.sendOrderToPayment).toHaveBeenCalled();
+  });
 });
