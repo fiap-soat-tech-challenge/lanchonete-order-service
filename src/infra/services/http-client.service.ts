@@ -13,7 +13,7 @@ export class HttpClientService {
 
   async makeRequest(method: string, url: string, data: any = null) {
     try {
-      return await axios({ method: method, url: url, data: data });
+      return await axios.request({ method: method, url: url, data: data });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
