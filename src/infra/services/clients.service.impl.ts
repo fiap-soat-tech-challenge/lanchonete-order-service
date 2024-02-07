@@ -10,6 +10,9 @@ export class ClientsServiceImpl implements ClientsService {
     private readonly httpClientService: HttpClientService,
   ) {}
 
+  /*
+    Verifica se o cliente existe no serviço de clientes
+   */
   async existsClientByCpf(clienteCpf: string): Promise<boolean> {
     const clientsUrl = this.configService.get('CLIENTS_SERVICE_URL');
     const response = await this.httpClientService.get(

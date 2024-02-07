@@ -56,7 +56,7 @@ describe('PaymentServiceImpl', () => {
 
     await paymentService.sendOrderToPayment(examplePedido);
 
-    expect(configService.get).toHaveBeenCalledWith('PAYMENT_SERVICE_URL');
+    expect(configService.get).toHaveBeenCalledWith('PAYMENTS_SERVICE_URL');
     expect(httpClientService.post).toHaveBeenCalledWith(
       `${paymentUrl}/api/pagamentos/novo`,
       pedidoPresenter,
