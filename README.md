@@ -102,3 +102,16 @@ Por fim, conseguimos gerenciar e monitorar o nosso banco de dados utilizando rec
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
 
+## SAGA Pattern - Coreografia
+
+Utilizamos a estratégia **coreografia**.
+
+Decidimos utilizar a estratégia **coreografia** por ser mais simples e ter um acoplamento fraco entre os serviços. Assim,
+pensando nos próximos passos, a evolução dos microsserviços se torna mais tranquila já que os mesmos vão estar sem
+acoplamento com os demais e poderemos também ao ponto que aumentamos o time (de desenvolvedores) dividir a sub times,
+o que vai facilitar o crescimento do time. Assim, por ser mais simples do que a estratégia orquestração, podemos
+implementar mais rapidamente, e com isso entregar uma primeira versão do software mais rápido.
+
+No futuro com a evolução, do software, do time, e mudanças no negócio (possivelmente) podemos pensar em utilizar a
+orquestração, mas no momento é mais vantajoso usarmos a estratégia **coreografia**. Assim cada serviço sabe qual
+evento disparar e qual evento deve ouvir para que a saga seja completa.
