@@ -10,7 +10,7 @@ import { ClientsServiceImpl } from '../services/clients.service.impl';
 import { ProdutoRepository } from '../../domain/repositories/produto.repository';
 import { PedidoRepository } from '../../domain/repositories/pedido.repository';
 import { ClientsService } from '../../domain/services/clients.service';
-import { PaymentQueueService } from '../../domain/services/payment-queue.service';
+import { PaymentService } from '../../domain/services/payment.service';
 
 const createProdutoUseCase = (produtoRepository: ProdutoRepository) => {
   return new ProdutosUseCases(produtoRepository);
@@ -19,7 +19,7 @@ const createProdutoUseCase = (produtoRepository: ProdutoRepository) => {
 const createPedidoUseCase = (
   pedidoRepository: PedidoRepository,
   ClientsService: ClientsService,
-  paymentService: PaymentQueueService,
+  paymentService: PaymentService,
 ) => {
   return new PedidoUseCases(pedidoRepository, ClientsService, paymentService);
 };

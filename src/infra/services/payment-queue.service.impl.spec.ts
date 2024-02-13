@@ -54,7 +54,7 @@ describe('PaymentServiceImpl', () => {
   it('should send order to payment', async () => {
     const pedidoPresenter = new PedidoPresenter(examplePedido);
 
-    await paymentService.sendOrderToPaymentQueue(examplePedido);
+    await paymentService.sendOrderToPayment(examplePedido);
 
     expect(configService.get).toHaveBeenCalledWith('PAYMENTS_SERVICE_URL');
     expect(httpClientService.post).toHaveBeenCalledWith(

@@ -2,14 +2,14 @@ import { PedidoRepository } from '../domain/repositories/pedido.repository';
 import { Pedido } from '../domain/model/pedido';
 import { NotFoundException } from '../domain/exceptions/not-found.exception';
 import { ItemPedido } from '../domain/model/item-pedido';
-import { PaymentQueueService } from '../domain/services/payment-queue.service';
+import { PaymentService } from '../domain/services/payment.service';
 import { ClientsService } from '../domain/services/clients.service';
 
 export class PedidoUseCases {
   constructor(
     private readonly pedidoRepository: PedidoRepository,
     private readonly clientsService: ClientsService,
-    private readonly paymentService: PaymentQueueService,
+    private readonly paymentService: PaymentService,
   ) {}
 
   async getNextCodigo(): Promise<number> {
@@ -44,7 +44,7 @@ export class PedidoUseCases {
     const pedido = new Pedido(nextCodigo, cpfCliente, items);
     const pedidoSalvo = await this.pedidoRepository.insert(pedido);
 
-    await this.paymentService.sendOrderToPaymentQueue(pedidoSalvo);
+    await this.paymentService.sendOrderToPayment(pedidoSalvo);
 
     return pedidoSalvo;
   }
