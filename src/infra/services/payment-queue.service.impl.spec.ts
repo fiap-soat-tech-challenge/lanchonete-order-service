@@ -1,4 +1,4 @@
-import { PaymentServiceImpl } from './payment.service.impl';
+import { PaymentQueueServiceImpl } from './payment-queue.service.impl';
 import { HttpClientService } from './http-client.service';
 import { Pedido } from '../../domain/model/pedido';
 import { PedidoPresenter } from '../apis/rest/presenters/pedido.presenter';
@@ -13,7 +13,7 @@ jest.mock('@nestjs/config');
 
 describe('PaymentServiceImpl', () => {
   const paymentUrl = 'https://orderservice.com';
-  let paymentService: PaymentServiceImpl;
+  let paymentService: PaymentQueueServiceImpl;
   let httpClientService: HttpClientService;
   let configService: ConfigService;
 
@@ -42,10 +42,10 @@ describe('PaymentServiceImpl', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PaymentServiceImpl, HttpClientService, ConfigService],
+      providers: [PaymentQueueServiceImpl, HttpClientService, ConfigService],
     }).compile();
 
-    paymentService = module.get<PaymentServiceImpl>(PaymentServiceImpl);
+    paymentService = module.get<PaymentQueueServiceImpl>(PaymentQueueServiceImpl);
     httpClientService = module.get<HttpClientService>(HttpClientService);
     configService = module.get<ConfigService>(ConfigService);
     jest.spyOn(configService, 'get').mockReturnValue(paymentUrl);
@@ -54,7 +54,7 @@ describe('PaymentServiceImpl', () => {
   it('should send order to payment', async () => {
     const pedidoPresenter = new PedidoPresenter(examplePedido);
 
-    await paymentService.sendOrderToPayment(examplePedido);
+    await paymentService.sendOrderToPaymentQueue(examplePedido);
 
     expect(configService.get).toHaveBeenCalledWith('PAYMENTS_SERVICE_URL');
     expect(httpClientService.post).toHaveBeenCalledWith(

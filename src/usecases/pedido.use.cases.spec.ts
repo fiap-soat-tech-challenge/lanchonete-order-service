@@ -2,7 +2,7 @@ import { PedidoRepository } from '../domain/repositories/pedido.repository';
 import { Pedido } from '../domain/model/pedido';
 import { NotFoundException } from '../domain/exceptions/not-found.exception';
 import { ItemPedido } from '../domain/model/item-pedido';
-import { PaymentService } from '../domain/services/payment.service';
+import { PaymentQueueService } from '../domain/services/payment-queue.service';
 import { ClientsService } from '../domain/services/clients.service';
 import { Categoria } from '../domain/model/categoria';
 import { Produto } from '../domain/model/produto';
@@ -11,7 +11,7 @@ import { PedidoUseCases } from './pedido.use.cases';
 describe('PedidoUseCases', () => {
   let mockPedidoRepository: jest.Mocked<PedidoRepository>;
   let mockClientsService: jest.Mocked<ClientsService>;
-  let mockPaymentService: jest.Mocked<PaymentService>;
+  let mockPaymentService: jest.Mocked<PaymentQueueService>;
   let pedidoUseCases: PedidoUseCases;
 
   const exampleItemPedido: ItemPedido = new ItemPedido(
@@ -49,7 +49,7 @@ describe('PedidoUseCases', () => {
     };
 
     mockPaymentService = {
-      sendOrderToPayment: jest.fn(),
+      sendOrderToPaymentQueue: jest.fn(),
     };
 
     pedidoUseCases = new PedidoUseCases(
@@ -110,7 +110,7 @@ describe('PedidoUseCases', () => {
     expect(mockPedidoRepository.insert).toHaveBeenCalledWith(
       expect.any(Pedido),
     );
-    expect(mockPaymentService.sendOrderToPayment).toHaveBeenCalledWith(
+    expect(mockPaymentService.sendOrderToPaymentQueue).toHaveBeenCalledWith(
       examplePedido,
     );
   });
@@ -125,12 +125,12 @@ describe('PedidoUseCases', () => {
       '12345678901',
     );
     expect(mockPedidoRepository.insert).not.toHaveBeenCalled();
-    expect(mockPaymentService.sendOrderToPayment).not.toHaveBeenCalled();
+    expect(mockPaymentService.sendOrderToPaymentQueue).not.toHaveBeenCalled();
   });
 
   it('should not throw NotFoundException when adding request with clientCpf is null', async () => {
     await pedidoUseCases.addPedido(null, [exampleItemPedido]);
     expect(mockPedidoRepository.insert).toHaveBeenCalled();
-    expect(mockPaymentService.sendOrderToPayment).toHaveBeenCalled();
+    expect(mockPaymentService.sendOrderToPaymentQueue).toHaveBeenCalled();
   });
 });

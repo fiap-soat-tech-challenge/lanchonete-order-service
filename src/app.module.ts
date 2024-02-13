@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseConfig } from './infra/database/database.config';
 import { EntitiesModule } from './infra/entities/entities.module';
+import { QueuesModule } from './infra/queues/queues.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { EntitiesModule } from './infra/entities/entities.module';
     RepositoriesModule,
     UseCasesProxyModule,
     HealthModule,
+    QueuesModule,
   ],
   providers: [DatabaseConfig],
 })
