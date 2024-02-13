@@ -13,9 +13,9 @@ export class PaymentQueueServiceImpl implements PaymentService {
   ) {}
 
   async sendOrderToPayment(pedido: Pedido): Promise<void> {
-    this.paymentQueueClient.emit('order_created', new PedidoPresenter(pedido));
     this.logger.log(
       `[Sender] Enviando pedido com Id [${pedido.id}] para a fila de pagamentos`,
     );
+    this.paymentQueueClient.emit('order_created', new PedidoPresenter(pedido));
   }
 }
