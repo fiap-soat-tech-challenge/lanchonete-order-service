@@ -5,15 +5,15 @@ import { mock, instance, when } from 'ts-mockito';
 import { OrdersForPaymentClientFactory } from './orders-for-payment-client-factory.service';
 
 describe('OrdersForPaymentClientFactory', () => {
-  const user = 'user';
-  const password = 'password';
+  const userTest = 'user';
+  const passwordTest = 'password';
   let factory: OrdersForPaymentClientFactory;
   let configService: ConfigService;
 
   beforeEach(async () => {
     configService = mock(ConfigService);
-    when(configService.get('QUEUE_USER')).thenReturn(user);
-    when(configService.get('QUEUE_PASSWORD')).thenReturn(password);
+    when(configService.get('QUEUE_USER')).thenReturn(userTest);
+    when(configService.get('QUEUE_PASSWORD')).thenReturn(passwordTest);
     when(configService.get('QUEUE_HOST')).thenReturn('localhost');
     when(configService.get('QUEUE_PORT')).thenReturn(5672);
 
@@ -40,7 +40,7 @@ describe('OrdersForPaymentClientFactory', () => {
       expect(clientOptions).toEqual({
         transport: Transport.RMQ,
         options: {
-          urls: [`amqp://${user}:${password}@localhost:5672`],
+          urls: [`amqp://${userTest}:${passwordTest}@localhost:5672`],
           queue: 'pedidos_para_pagamentos',
           queueOptions: {
             durable: true,
