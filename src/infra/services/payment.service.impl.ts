@@ -5,8 +5,8 @@ import { PedidoPresenter } from '../apis/rest/presenters/pedido.presenter';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
-export class PaymentQueueServiceImpl implements PaymentService {
-  private readonly logger = new Logger(PaymentQueueServiceImpl.name);
+export class PaymentServiceImpl implements PaymentService {
+  private readonly logger = new Logger(PaymentServiceImpl.name);
   constructor(
     @Inject('PAYMENT_QUEUE_CLIENT')
     private readonly paymentQueueClient: ClientProxy,

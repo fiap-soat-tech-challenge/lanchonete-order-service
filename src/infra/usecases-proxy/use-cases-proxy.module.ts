@@ -5,7 +5,7 @@ import { ProdutosUseCases } from '../../usecases/produtos.use.cases';
 import { PedidoRepositoryImpl } from '../repositories/pedido.repository.impl';
 import { PedidoUseCases } from '../../usecases/pedido.use.cases';
 import { ServicesModule } from '../services/services.module';
-import { PaymentQueueServiceImpl } from '../services/payment-queue.service.impl';
+import { PaymentServiceImpl } from '../services/payment.service.impl';
 import { ClientsServiceImpl } from '../services/clients.service.impl';
 import { ProdutoRepository } from '../../domain/repositories/produto.repository';
 import { PedidoRepository } from '../../domain/repositories/pedido.repository';
@@ -35,11 +35,7 @@ const createPedidoUseCase = (
     {
       provide: PedidoUseCases,
       useFactory: createPedidoUseCase,
-      inject: [
-        PedidoRepositoryImpl,
-        ClientsServiceImpl,
-        PaymentQueueServiceImpl,
-      ],
+      inject: [PedidoRepositoryImpl, ClientsServiceImpl, PaymentServiceImpl],
     },
   ],
   exports: [ProdutosUseCases, PedidoUseCases],
