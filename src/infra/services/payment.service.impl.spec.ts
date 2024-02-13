@@ -8,8 +8,9 @@ import { Categoria } from '../../domain/model/categoria';
 import { PaymentServiceImpl } from './payment.service.impl';
 
 class MockClientProxy {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  emit(pattern: string, data: any): void {}
+  emit(pattern: string, data: any): void {
+    console.log(pattern, data);
+  }
 }
 
 describe('PaymentServiceImpl', () => {
