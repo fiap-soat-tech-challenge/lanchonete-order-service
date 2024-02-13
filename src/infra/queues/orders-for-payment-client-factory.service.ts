@@ -7,7 +7,9 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class PaymentQueueFactory implements ClientsModuleOptionsFactory {
+export class OrdersForPaymentClientFactory
+  implements ClientsModuleOptionsFactory
+{
   constructor(private configService: ConfigService) {}
 
   createClientOptions(): Promise<ClientProvider> | ClientProvider {

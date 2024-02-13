@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule } from '@nestjs/microservices';
-import { PaymentQueueFactory } from './payment-queue.factory';
+import { OrdersForPaymentClientFactory } from './orders-for-payment-client-factory.service';
 
 @Module({
   imports: [
@@ -8,8 +8,8 @@ import { PaymentQueueFactory } from './payment-queue.factory';
       isGlobal: true,
       clients: [
         {
-          name: 'PAYMENT_QUEUE_CLIENT',
-          useClass: PaymentQueueFactory,
+          name: 'ORDERS_FOR_PAYMENT_QUEUE_CLIENT',
+          useClass: OrdersForPaymentClientFactory,
         },
       ],
     }),

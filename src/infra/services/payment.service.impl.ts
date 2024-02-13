@@ -8,14 +8,17 @@ import { ClientProxy } from '@nestjs/microservices';
 export class PaymentServiceImpl implements PaymentService {
   private readonly logger = new Logger(PaymentServiceImpl.name);
   constructor(
-    @Inject('PAYMENT_QUEUE_CLIENT')
-    private readonly paymentQueueClient: ClientProxy,
+    @Inject('ORDERS_FOR_PAYMENT_QUEUE_CLIENT')
+    private readonly ordersForPaymentQueueClient: ClientProxy,
   ) {}
 
   async sendOrderToPayment(pedido: Pedido): Promise<void> {
     this.logger.log(
       `[Sender] Enviando pedido com Id [${pedido.id}] para a fila de pagamentos`,
     );
-    this.paymentQueueClient.emit('order_created', new PedidoPresenter(pedido));
+    this.ordersForPaymentQueueClient.emit(
+      'order_created',
+      new PedidoPresenter(pedido),
+    );
   }
 }
