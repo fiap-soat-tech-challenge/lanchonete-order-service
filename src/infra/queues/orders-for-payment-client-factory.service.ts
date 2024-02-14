@@ -22,7 +22,7 @@ export class OrdersForPaymentClientFactory
       transport: Transport.RMQ,
       options: {
         urls: [`amqp://${user}:${password}@${host}:${port}`],
-        queue: 'pedidos_para_pagamentos',
+        queue: 'pedidos_para_pagamento',
         queueOptions: {
           durable: true,
         },

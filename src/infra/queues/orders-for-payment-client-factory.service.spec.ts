@@ -50,7 +50,7 @@ describe('OrdersForPaymentClientFactory', () => {
           urls: [
             `amqp://${process.env.QUEUE_USER}:${process.env.QUEUE_PASSWORD}@${process.env.QUEUE_HOST}:${process.env.QUEUE_PORT}`,
           ],
-          queue: 'pedidos_para_pagamentos',
+          queue: 'pedidos_para_pagamento',
           queueOptions: {
             durable: true,
           },
