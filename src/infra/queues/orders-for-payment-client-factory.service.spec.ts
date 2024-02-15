@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { Transport } from '@nestjs/microservices';
-import { mock, instance, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 import { OrdersForPaymentClientFactory } from './orders-for-payment-client-factory.service';
 
 describe('OrdersForPaymentClientFactory', () => {
@@ -42,19 +41,27 @@ describe('OrdersForPaymentClientFactory', () => {
 
   describe('createClientOptions', () => {
     it('should create client options', async () => {
-      const clientOptions = await factory.createClientOptions();
+      const result = await factory.createModuleConfig();
 
-      expect(clientOptions).toEqual({
-        transport: Transport.RMQ,
-        options: {
-          urls: [
-            `amqp://${process.env.QUEUE_USER}:${process.env.QUEUE_PASSWORD}@${process.env.QUEUE_HOST}:${process.env.QUEUE_PORT}`,
-          ],
-          queue: 'pedidos_para_pagamento',
-          queueOptions: {
-            durable: true,
+      expect(result).toEqual({
+        name: 'RabbitMQ Server',
+        uri: `amqp://${process.env.QUEUE_USER}:${process.env.QUEUE_PASSWORD}@${process.env.QUEUE_HOST}:${process.env.QUEUE_PORT}`,
+        exchanges: [
+          {
+            name: 'pedidos_para_pagamento',
+            type: 'fanout',
           },
-        },
+        ],
+        queues: [
+          {
+            name: 'pedidos_para_pagamento',
+            options: {
+              durable: true,
+            },
+            exchange: 'pedidos_para_pagamento',
+            routingKey: '',
+          },
+        ],
       });
     });
   });
