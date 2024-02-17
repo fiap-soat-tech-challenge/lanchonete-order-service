@@ -123,7 +123,8 @@ são HTML, não é possível visualizá-los diretamente no GitHub. Para visualiz
 os arquivos HTML em um navegador.
 
 Importante: Como um dos relatórios não teve nenhum alerta, resolvemos disponibilizar imagens da execução do ZAP Scanning
-para constatar que o mesmo foi executado como deveria.
+para constatar que o mesmo foi executado como deveria. E como não houve alertas **High** então não foi necessário gerar 
+dois relatórios para cada endpoint.
 
 ### Listar/Exibir Cardápio
 
