@@ -118,9 +118,21 @@ evento disparar e qual evento deve ouvir para que a saga seja completa.
 
 ## Zap Scanning Reports
 
-Os relatórios de segurança do ZAP Scanning estão disponíveis no diretório `zap-reports` na raiz do projeto.
+Os relatórios de segurança do ZAP Scanning estão disponíveis no diretório `zap-reports` na raiz do projeto. Como os 
+são HTML, não é possível visualizá-los diretamente no GitHub. Para visualizá-los, faça o clone do repositório e abra 
+os arquivos HTML em um navegador.
+
+Importante: Como um dos relatórios não teve nenhum alerta, resolvemos disponibilizar imagens da execução do ZAP Scanning
+para constatar que o mesmo foi executado como deveria.
 
 ### Listar/Exibir Cardápio
 
+![Listar/Exibir Cardápio Imagem 1](zap-reports/zap-listar-cardapio-1.png)
+
+![Listar/Exibir Cardápio Imagem 2](zap-reports/zap-listar-cardapio-2.png)
 
 ### Realização do Pedido
+
+![Realização do Pedido Imagem 1](zap-reports/zap-realizacao-pedido-1.png)
+
+![Realização do Pedido Imagem 2](zap-reports/zap-realizacao-pedido-2.png)
