@@ -137,3 +137,7 @@ necessário gerar dois relatórios para cada endpoint.
 ![Realização do Pedido Imagem 1](zap-reports/zap-realizacao-pedido-1.png)
 
 ![Realização do Pedido Imagem 2](zap-reports/zap-realizacao-pedido-2.png)
+
+## Diagrama da Arquitetura
+
+![Diagrama da Arquitetura](https://github.com/fiap-soat-tech-challenge/terraform-lanchonete-app/blob/main/docs/imagens/infra_aws_app.png)
