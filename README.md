@@ -115,3 +115,25 @@ implementar mais rapidamente, e com isso entregar uma primeira versão do softwa
 No futuro com a evolução, do software, do time, e mudanças no negócio (possivelmente) podemos pensar em utilizar a
 orquestração, mas no momento é mais vantajoso usarmos a estratégia **coreografia**. Assim cada serviço sabe qual
 evento disparar e qual evento deve ouvir para que a saga seja completa.
+
+## Zap Scanning Reports
+
+Os relatórios de segurança do ZAP Scanning estão disponíveis no diretório `zap-reports` na raiz do projeto. Como os 
+são HTML, não é possível visualizá-los diretamente no GitHub. Para visualizá-los, faça o clone do repositório e abra 
+os arquivos HTML em um navegador.
+
+Importante: Como um dos relatórios não teve nenhum alerta, resolvemos disponibilizar imagens da execução do ZAP Scanning
+para constatar que o mesmo foi executado como deveria. E como não houve alerta com risco **High** então não foi 
+necessário gerar dois relatórios para cada endpoint.
+
+### Listar/Exibir Cardápio
+
+![Listar/Exibir Cardápio Imagem 1](zap-reports/zap-listar-cardapio-1.png)
+
+![Listar/Exibir Cardápio Imagem 2](zap-reports/zap-listar-cardapio-2.png)
+
+### Realização do Pedido
+
+![Realização do Pedido Imagem 1](zap-reports/zap-realizacao-pedido-1.png)
+
+![Realização do Pedido Imagem 2](zap-reports/zap-realizacao-pedido-2.png)
