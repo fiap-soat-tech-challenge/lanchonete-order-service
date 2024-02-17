@@ -118,6 +118,8 @@ evento disparar e qual evento deve ouvir para que a saga seja completa.
 
 ## Zap Scanning Reports
 
+Os relatórios de segurança do ZAP Scanning estão disponíveis no diretório `zap-reports` na raiz do projeto.
+
 ### Listar/Exibir Cardápio
 
 
