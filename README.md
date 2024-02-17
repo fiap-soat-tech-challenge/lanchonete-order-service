@@ -115,3 +115,10 @@ implementar mais rapidamente, e com isso entregar uma primeira versão do softwa
 No futuro com a evolução, do software, do time, e mudanças no negócio (possivelmente) podemos pensar em utilizar a
 orquestração, mas no momento é mais vantajoso usarmos a estratégia **coreografia**. Assim cada serviço sabe qual
 evento disparar e qual evento deve ouvir para que a saga seja completa.
+
+## Zap Scanning Reports
+
+### Listar/Exibir Cardápio
+
+
+### Realização do Pedido
