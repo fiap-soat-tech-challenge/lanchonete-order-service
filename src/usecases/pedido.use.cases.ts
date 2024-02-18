@@ -49,6 +49,10 @@ export class PedidoUseCases {
     return pedidoSalvo;
   }
 
+  async deleteCpfCliente(cpf: string): Promise<void> {
+    await this.pedidoRepository.deleteCpfCliente(cpf);
+  }
+
   async _checkClienteExists(clienteCpf: string) {
     if (clienteCpf !== '' && clienteCpf !== null && clienteCpf !== undefined) {
       return await this.clientsService.existsClientByCpf(clienteCpf);

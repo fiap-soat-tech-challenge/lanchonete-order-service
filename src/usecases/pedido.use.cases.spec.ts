@@ -42,6 +42,7 @@ describe('PedidoUseCases', () => {
       findLastCodigo: jest.fn(),
       findByOrderId: jest.fn(),
       insert: jest.fn(),
+      deleteCpfCliente: jest.fn(),
     };
 
     mockClientsService = {
