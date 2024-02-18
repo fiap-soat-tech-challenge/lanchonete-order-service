@@ -4,7 +4,7 @@ import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq';
 import { ModuleConfigFactory } from '@golevelup/nestjs-modules/lib/dynamicModules';
 
 @Injectable()
-export class OrdersForPaymentClientFactory
+export class QueuesClientFactory
   implements ModuleConfigFactory<RabbitMQConfig>
 {
   constructor(private configService: ConfigService) {}
@@ -32,6 +32,12 @@ export class OrdersForPaymentClientFactory
           },
           exchange: 'pedidos_para_pagamento',
           routingKey: '',
+        },
+        {
+          name: 'delete_cliente_orders',
+          options: {
+            durable: true,
+          },
         },
       ],
     };

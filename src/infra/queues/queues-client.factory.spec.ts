@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { instance, mock, when } from 'ts-mockito';
-import { OrdersForPaymentClientFactory } from './orders-for-payment-client-factory.service';
+import { OrdersForPaymentClientFactory } from './queues-client.factory';
 
 describe('OrdersForPaymentClientFactory', () => {
   let factory: OrdersForPaymentClientFactory;

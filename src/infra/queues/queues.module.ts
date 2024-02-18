@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { OrdersForPaymentClientFactory } from './orders-for-payment-client-factory.service';
+import { QueuesClientFactory } from './queues-client.factory';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
   imports: [
     RabbitMQModule.forRootAsync(RabbitMQModule, {
-      useClass: OrdersForPaymentClientFactory,
+      useClass: QueuesClientFactory,
     }),
     QueuesModule,
   ],
