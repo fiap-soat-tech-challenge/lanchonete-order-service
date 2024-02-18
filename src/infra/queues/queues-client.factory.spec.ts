@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { instance, mock, when } from 'ts-mockito';
-import { OrdersForPaymentClientFactory } from './queues-client.factory';
+import { QueuesClientFactory } from './queues-client.factory';
 
 describe('OrdersForPaymentClientFactory', () => {
-  let factory: OrdersForPaymentClientFactory;
+  let factory: QueuesClientFactory;
   let configService: ConfigService;
 
   beforeEach(async () => {
@@ -25,14 +25,12 @@ describe('OrdersForPaymentClientFactory', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        OrdersForPaymentClientFactory,
+        QueuesClientFactory,
         { provide: ConfigService, useValue: instance(configService) },
       ],
     }).compile();
 
-    factory = module.get<OrdersForPaymentClientFactory>(
-      OrdersForPaymentClientFactory,
-    );
+    factory = module.get<QueuesClientFactory>(QueuesClientFactory);
   });
 
   it('should be defined', () => {
@@ -60,6 +58,12 @@ describe('OrdersForPaymentClientFactory', () => {
             },
             exchange: 'pedidos_para_pagamento',
             routingKey: '',
+          },
+          {
+            name: 'delete_cliente_orders',
+            options: {
+              durable: true,
+            },
           },
         ],
       });
