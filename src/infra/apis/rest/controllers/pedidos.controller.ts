@@ -18,7 +18,7 @@ import { ItemPedido } from '../../../../domain/model/item-pedido';
 @ApiTags('Pedidos')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
 @ApiBearerAuth()
-@Controller('/pedidos')
+@Controller('/api/pedidos')
 export class PedidosController {
   constructor(
     private pedidoUseCases: PedidoUseCases,
