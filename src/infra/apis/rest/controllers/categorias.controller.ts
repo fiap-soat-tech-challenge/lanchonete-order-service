@@ -12,7 +12,7 @@ import { Categoria } from '../../../../domain/model/categoria';
 @ApiTags('Categorias')
 @ApiResponse({ status: '5XX', description: 'Erro interno do sistema' })
 @ApiBearerAuth()
-@Controller('/categorias')
+@Controller('/api/categorias')
 export class CategoriasController {
   @ApiOperation({
     summary: 'Lista todas as categorias',
